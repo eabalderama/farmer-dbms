@@ -1,0 +1,168 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model accounts {
+  account_id Int    @id @default(autoincrement())
+  email      String @unique
+  password   String
+  role       roles  @default(WORKER)
+  user       users?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model users {
+  user_id          Int                @id @default(autoincrement())
+  name             String
+  contact_number   String
+  account_id       Int                @unique
+  account          accounts           @relation(fields: [account_id], references: [account_id])
+  user_expertise   user_expertise[]
+  assigned_farmers assigned_workers[]
+  visits           visits[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model expertise {
+  expertise_id   Int              @id @default(autoincrement())
+  expertise_name String
+  user_expertise user_expertise[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model user_expertise {
+  user_expertise_id Int       @id @default(autoincrement())
+  user_id           Int
+  user              users     @relation(fields: [user_id], references: [user_id])
+  expertise_id      Int
+  expertise         expertise @relation(fields: [expertise_id], references: [expertise_id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model farmers {
+  farmer_id      Int     @id @default(autoincrement())
+  name           String
+  contact_number String?
+  email          String?
+  address        String?
+  farm_name      String?
+
+  assigned_workers assigned_workers[]
+  visits           visits[]
+  planted_crops    planted_crops[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model assigned_workers {
+  assigned_worker_id Int     @id @default(autoincrement())
+  user_id            Int
+  user               users   @relation(fields: [user_id], references: [user_id])
+  farmer_id          Int
+  farmer             farmers @relation(fields: [farmer_id], references: [farmer_id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model visits {
+  visit_id   Int      @id @default(autoincrement())
+  farmer_id  Int
+  farmer     farmers  @relation(fields: [farmer_id], references: [farmer_id])
+  user_id    Int
+  user       users    @relation(fields: [user_id], references: [user_id])
+  visit_date DateTime
+  note       String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model crops {
+  crop_id   Int    @id @default(autoincrement())
+  crop_name String
+
+  planted_crops planted_crops[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model planted_crops {
+  planted_crop_id Int       @id @default(autoincrement())
+  crop_id         Int
+  crop            crops     @relation(fields: [crop_id], references: [crop_id])
+  farmer_id       Int
+  farmer          farmers   @relation(fields: [farmer_id], references: [farmer_id])
+  harvest_date    DateTime?
+  planting_date   DateTime?
+  area            String?
+
+  yield       yields?
+  crop_inputs crop_inputs[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model yields {
+  yield_id        Int           @id @default(autoincrement())
+  planted_crop_id Int           @unique
+  planted_crop    planted_crops @relation(fields: [planted_crop_id], references: [planted_crop_id])
+  harvest_date    DateTime?
+  quantity        String?
+  notes           String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model input_types {
+  input_type_id Int    @id @default(autoincrement())
+  input_name    String
+
+  crop_inputs crop_inputs[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model crop_inputs {
+  crop_input_id    Int           @id @default(autoincrement())
+  planted_crop_id  Int
+  planted_crop     planted_crops @relation(fields: [planted_crop_id], references: [planted_crop_id])
+  input_type_id    Int
+  input_type       input_types   @relation(fields: [input_type_id], references: [input_type_id])
+  name             String
+  cost             String?
+  quantity         String?
+  application_date DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum roles {
+  ADMIN
+  WORKER
+}
