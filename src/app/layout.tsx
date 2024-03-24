@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
 import Profile from "@/components/Profile";
 import ProfileMenuButton from "@/components/ProfileMenuButton";
+import { Toaster } from "@/components/ui/sonner";
 
 const montserrat = Montserrat({ subsets: ["latin"] });
 
@@ -21,7 +22,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={montserrat.className}>{children}</body>
+      <body className={montserrat.className}>
+        <main>{children}</main>
+        <Toaster />
+      </body>
     </html>
   );
 }
