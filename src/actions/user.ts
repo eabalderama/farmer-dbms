@@ -23,7 +23,7 @@ export const createUser = async (data: unknown) => {
     const account = await prisma.accounts.create({
       data: {
         email: payload.email,
-        password: payload.password,
+        password: hashed,
         role: payload.role,
         user: {
           create: {
