@@ -1,20 +1,8 @@
-import { getWorkers } from "@/actions/user";
 import SideAction from "@/components/CreateUser";
-import { DataTable } from "@/components/DataTable";
-import { ExtensionWorkerColumns } from "@/components/DataTable/Columns/ExtensionWorkerColumns";
+import { Suspense } from "react";
+import ExtensionWorkerTable from "./ExtensionWorkerTable";
 
-export default async function ExtensionWorkersPage() {
-  const users = await getWorkers();
-
-  const formatted = users.map((user) => {
-    return {
-      user_id: user.user_id,
-      name: user.name,
-      email: user.account.email,
-      assigned_farmers: user._count.assigned_farmers,
-    };
-  });
-
+export default function ExtensionWorkersPage() {
   return (
     <main className="min-h-screen items-center p-24">
       <div className="w-full flex justify-between">
@@ -22,7 +10,9 @@ export default async function ExtensionWorkersPage() {
         <SideAction />
       </div>
       <div className="w-full mt-5">
-        <DataTable columns={ExtensionWorkerColumns} data={formatted} />
+        <Suspense fallback={<>Loading.....</>}>
+          <ExtensionWorkerTable />
+        </Suspense>
       </div>
     </main>
   );
