@@ -57,7 +57,13 @@ export default async function SideBar() {
           })}
       </div>
       <div className="flex-1 flex flex-col justify-end">
-        <Profile />
+        {session && (
+          <Profile
+            name={session.user.name}
+            image={session.user.picture}
+            role={session.user.role}
+          />
+        )}
       </div>
     </nav>
   );
