@@ -19,17 +19,35 @@ export const authOptions: NextAuthOptions = {
           credentials.password
         );
 
-        if (account) {
+        if (account && account.user) {
           return {
-            user_id: account.account_id,
+            user_id: account.user.user_id,
             name: account.user?.name,
             role: account.role,
-            image: account.user?.picture,
+            picture: account.user?.picture,
           } as User;
         }
-
         return null;
       },
     }),
   ],
+  callbacks: {
+    jwt({ token, user }) {
+      return { ...token, ...user };
+    },
+    session({ session, token }) {
+      return {
+        ...session,
+        user: {
+          ...token,
+        },
+      };
+    },
+  },
+  session: {
+    strategy: "jwt",
+  },
+  pages: {
+    signIn: "/sign-in",
+  },
 };

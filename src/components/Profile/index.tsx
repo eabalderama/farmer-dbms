@@ -1,15 +1,26 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+"use client";
 
-interface ProfileProps {
-  image?: string;
-  initials: string;
-}
+import ProfileMenuButton from "../ProfileMenuButton";
+import ProfileAvatar from "./ProfileAvatar";
+import { useSession } from "next-auth/react";
 
-export default function Profile({ image, initials }: ProfileProps) {
+export default function Profile() {
+  const session = useSession();
+  const user =
+    session.status === "authenticated" ? session.data.user : undefined;
+
   return (
-    <Avatar className="w-[54px] h-[54px]">
-      <AvatarImage src={image} />
-      <AvatarFallback className="bg-secondary">{initials}</AvatarFallback>
-    </Avatar>
+    <div className="px-4 py-2 flex gap-3">
+      <ProfileAvatar initials={"JD"} />
+      <div className="flex-1 flex flex-col justify-center">
+        <p className="font-bold">{user?.name}</p>
+        {user && (
+          <p className="text-sm">
+            {user.role === "ADMIN" ? "Admin" : "Extension Worker"}
+          </p>
+        )}
+      </div>
+      <ProfileMenuButton />
+    </div>
   );
 }

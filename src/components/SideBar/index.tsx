@@ -1,11 +1,8 @@
-"use client";
-
-import Link from "next/link";
+import { getServerSession } from "next-auth";
 import Profile from "../Profile";
-import ProfileMenuButton from "../ProfileMenuButton";
-import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
-import { usePathname } from "next/navigation";
+import LinkButton from "./LinkButton";
+import { authOptions } from "@/lib/authOptions";
 
 const links = [
   {
@@ -41,8 +38,8 @@ const adminLinks = [
   },
 ];
 
-export default function SideBar() {
-  const pathname = usePathname();
+export default async function SideBar() {
+  const session = await getServerSession(authOptions);
   return (
     <nav className="w-[300px] bg-background py-5 border-r flex flex-col">
       <h2 className="text-center text-3xl font-bold my-3 text-emerald-800">
@@ -50,44 +47,17 @@ export default function SideBar() {
       </h2>
       <div className="flex flex-col gap-2 mt-5">
         {links.map((link) => {
-          return (
-            <Button
-              key={link.path}
-              variant="ghost"
-              className={`text-lg hover:bg-secondary rounded-none !justify-start text-emerald-800 ${
-                pathname === link.path ? "bg-secondary" : ""
-              }`}
-              asChild
-            >
-              <Link href={link.path}>{link.label}</Link>
-            </Button>
-          );
+          return <LinkButton key={link.path} {...link} />;
         })}
         <Separator className="my-4" />
-        {adminLinks.map((link) => {
-          return (
-            <Button
-              key={link.path}
-              variant="ghost"
-              className={`text-lg hover:bg-secondary rounded-none !justify-start text-emerald-800 ${
-                pathname === link.path ? "bg-secondary" : ""
-              }`}
-              asChild
-            >
-              <Link href={link.path}>{link.label}</Link>
-            </Button>
-          );
-        })}
+        {session &&
+          session.user.role === "ADMIN" &&
+          adminLinks.map((link) => {
+            return <LinkButton key={link.path} {...link} />;
+          })}
       </div>
       <div className="flex-1 flex flex-col justify-end">
-        <div className="px-4 py-2 flex gap-3">
-          <Profile initials="JD" />
-          <div className="flex-1 flex flex-col justify-center">
-            <p className="font-bold">John Doe</p>
-            <p className="text-sm">Extension Worker</p>
-          </div>
-          <ProfileMenuButton />
-        </div>
+        <Profile />
       </div>
     </nav>
   );

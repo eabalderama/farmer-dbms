@@ -25,14 +25,16 @@ export const validateCredentials = async (email: string, password: string) => {
     return null;
   }
 
+  const { password: accountPassword, ...rest } = account;
+
   const isValidPassword = bcrypt.compareSync(
     credentials.password,
-    account.password
+    accountPassword
   );
 
   if (!isValidPassword) {
     return null;
   }
 
-  return account;
+  return rest;
 };
