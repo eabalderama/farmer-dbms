@@ -2,9 +2,10 @@
 
 import { prisma } from "@/lib/db";
 import { CreateUserSchema } from "@/lib/schema";
-import { Prisma } from "@prisma/client";
+import { roles } from "@prisma/client";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import bcrypt from "bcrypt";
+import { revalidatePath } from "next/cache";
 
 const SALT_ROUNDS = 10;
 
@@ -38,6 +39,7 @@ export const createUser = async (data: unknown) => {
       },
     });
 
+    revalidatePath("/extension-workers");
     return {
       success: true,
       message: "User created successfully",
@@ -55,4 +57,25 @@ export const createUser = async (data: unknown) => {
       error: error,
     };
   }
+};
+
+export const getWorkers = async () => {
+  const users = await prisma.users.findMany({
+    where: {
+      account: {
+        role: roles.WORKER,
+      },
+    },
+    include: {
+      account: true,
+      assigned_farmers: true,
+      _count: {
+        select: {
+          assigned_farmers: true,
+        },
+      },
+    },
+  });
+
+  return users;
 };
