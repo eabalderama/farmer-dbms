@@ -9,7 +9,7 @@ import {
 import { Button } from "../ui/button";
 import CreateUserForm from "../Forms/CreateUserForm";
 
-export default function SideAction() {
+export default function CreateUser() {
   return (
     <Sheet>
       <SheetTrigger asChild>
