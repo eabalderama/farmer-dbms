@@ -1,3 +1,5 @@
+import CreateUserForm from "@/components/Forms/CreateUserForm";
+import { Button } from "@/components/ui/button";
 import {
   Sheet,
   SheetContent,
@@ -6,8 +8,6 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { Button } from "../ui/button";
-import CreateUserForm from "../Forms/CreateUserForm";
 
 export default function CreateUser() {
   return (
