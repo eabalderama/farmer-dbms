@@ -32,3 +32,7 @@ export const CreateUserSchema = z.object({
     ),
   role: z.enum([roles.ADMIN, roles.WORKER]).optional(),
 });
+
+export const CreateExpertiseSchema = z.object({
+  name: z.string().min(3),
+});
