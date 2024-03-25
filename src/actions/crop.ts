@@ -1,12 +1,12 @@
 "use server";
 
 import { prisma } from "@/lib/db";
-import { CreateInputTypeSchema } from "@/lib/schema";
+import { CreateCropSchema } from "@/lib/schema";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { revalidatePath } from "next/cache";
 
-export const createInputType = async (data: unknown) => {
-  const result = CreateInputTypeSchema.safeParse(data);
+export const createCrop = async (data: unknown) => {
+  const result = CreateCropSchema.safeParse(data);
   if (!result.success) {
     const formatted = result.error.format();
     return { success: false, message: "Validation error", error: formatted };
@@ -15,20 +15,20 @@ export const createInputType = async (data: unknown) => {
   const payload = result.data;
 
   try {
-    const inputType = await prisma.input_types.create({
+    const crop = await prisma.crops.create({
       data: payload,
     });
 
-    revalidatePath("/input-types");
+    revalidatePath("/crops");
 
     return {
       success: true,
-      message: "Input type successfully created",
-      data: inputType,
+      message: "Crop successfully created",
+      data: crop,
     };
   } catch (error) {
     console.error(error);
-    let message = "An error occured while creating input";
+    let message = "An error occured while creating crop";
     if (error instanceof PrismaClientKnownRequestError) {
       message = error.message;
     }
@@ -40,16 +40,16 @@ export const createInputType = async (data: unknown) => {
   }
 };
 
-export const getInputType = async () => {
-  const inputTypes = await prisma.input_types.findMany({
+export const getCrop = async () => {
+  const crops = await prisma.crops.findMany({
     include: {
       _count: {
         select: {
-          crop_inputs: true,
+          planted_crops: true,
         },
       },
     },
   });
 
-  return inputTypes;
+  return crops;
 };

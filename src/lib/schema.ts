@@ -40,3 +40,7 @@ export const CreateExpertiseSchema = z.object({
 export const CreateInputTypeSchema = z.object({
   input_name: z.string().min(3),
 });
+
+export const CreateCropSchema = z.object({
+  crop_name: z.string().min(3),
+});
