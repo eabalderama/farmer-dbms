@@ -36,3 +36,7 @@ export const CreateUserSchema = z.object({
 export const CreateExpertiseSchema = z.object({
   name: z.string().min(3),
 });
+
+export const CreateInputTypeSchema = z.object({
+  input_name: z.string().min(3),
+});

@@ -10,25 +10,25 @@ import {
   FormMessage,
 } from "../ui/form";
 import { z } from "zod";
-import { CreateExpertiseSchema } from "@/lib/schema";
+import { CreateInputTypeSchema } from "@/lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { createExpertise } from "@/actions/expertise";
 import { toast } from "sonner";
+import { createInputType } from "@/actions/inputType";
 
-export default function CreateExpertiseForm() {
-  const form = useForm<z.infer<typeof CreateExpertiseSchema>>({
-    resolver: zodResolver(CreateExpertiseSchema),
+export default function CreateInputTypeForm() {
+  const form = useForm<z.infer<typeof CreateInputTypeSchema>>({
+    resolver: zodResolver(CreateInputTypeSchema),
     defaultValues: {
-      name: "",
+      input_name: "",
     },
   });
 
   const formState = useFormState({ control: form.control });
 
-  const onSubmit = async (values: z.infer<typeof CreateExpertiseSchema>) => {
-    const response = await createExpertise(values);
+  const onSubmit = async (values: z.infer<typeof CreateInputTypeSchema>) => {
+    const response = await createInputType(values);
     if (!response.success) {
       toast.error(response.message);
       return;
@@ -44,10 +44,10 @@ export default function CreateExpertiseForm() {
       >
         <FormField
           control={form.control}
-          name="name"
+          name="input_name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Expertise</FormLabel>
+              <FormLabel>Name</FormLabel>
               <FormControl>
                 <Input {...field} />
               </FormControl>
