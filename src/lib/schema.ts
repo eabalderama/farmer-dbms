@@ -44,3 +44,20 @@ export const CreateInputTypeSchema = z.object({
 export const CreateCropSchema = z.object({
   crop_name: z.string().min(3),
 });
+
+export const CreateFarmerSchema = z.object({
+  name: z.string().min(3),
+  contact_number: z
+    .string()
+    .min(13, "Contact number must have at least 13 character(s)")
+    .max(13, "Contact number must not be more than 13 characters(s)")
+    .regex(
+      new RegExp(/^\+63{1}[0-9]{3,14}$/),
+      "Contact number must follow the correct format"
+    )
+    .optional(),
+  email: z.string().min(1).email(),
+  address: z.string().min(3).optional(),
+  farm_name: z.string().min(3).optional(),
+  assigned_workers: z.array(z.number()),
+});
