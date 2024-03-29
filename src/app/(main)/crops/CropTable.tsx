@@ -10,6 +10,7 @@ export default async function CropTable() {
       crop_id: item.crop_id,
       crop_name: item.crop_name,
       planted_count: item._count.planted_crops,
+      created_at: item.created_at,
     };
   });
 

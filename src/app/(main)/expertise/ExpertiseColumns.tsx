@@ -8,6 +8,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ColumnDef } from "@tanstack/react-table";
+import { format } from "date-fns";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 
 export const ExpertiseColumns: ColumnDef<TExpertiseRow>[] = [
@@ -38,6 +39,29 @@ export const ExpertiseColumns: ColumnDef<TExpertiseRow>[] = [
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
+    },
+  },
+  {
+    accessorKey: "created_at",
+    header: ({ column }) => {
+      return (
+        <Button
+          title="Number of worker that have the expertise"
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Date Created
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ cell }) => {
+      const value = cell.getValue();
+      let date = "N/A";
+      if (value) {
+        date = format(value.toString(), "PP");
+      }
+      return <span>{date}</span>;
     },
   },
   {

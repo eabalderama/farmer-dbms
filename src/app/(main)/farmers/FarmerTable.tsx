@@ -13,6 +13,7 @@ export default async function FarmerTable() {
       email: farmer.email || "",
       planted_crops: farmer._count.planted_crops,
       assigned_workers: farmer._count.assigned_workers,
+      created_at: farmer.created_at,
     };
   });
 

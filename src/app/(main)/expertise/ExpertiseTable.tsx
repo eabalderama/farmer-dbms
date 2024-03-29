@@ -10,6 +10,7 @@ export default async function ExpertiseTable() {
       expertise_id: item.expertise_id,
       expertise_name: item.expertise_name,
       user_count: item._count.user_expertise,
+      created_at: item.created_at,
     };
   });
 

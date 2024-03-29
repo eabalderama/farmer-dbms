@@ -11,6 +11,7 @@ export default async function ExtensionWorkerTable() {
       name: user.name,
       email: user.account.email,
       assigned_farmers: user._count.assigned_farmers,
+      created_at: user.created_at,
     };
   });
   return <DataTable columns={ExtensionWorkerColumns} data={formatted} />;

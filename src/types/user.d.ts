@@ -7,6 +7,7 @@ type TUserRow = {
   email: string;
   name: string;
   assigned_farmers: number;
+  created_at: Date;
 };
 
 type Users = ThenArg<ReturnType<typeof getWorkers>>;

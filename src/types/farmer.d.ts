@@ -7,6 +7,7 @@ type TFarmerRow = {
   email: string;
   planted_crops: number;
   assigned_workers: number;
+  created_at: Date;
 };
 
 type Farmers = ThenArg<ReturnType<typeof getFarmers>>;

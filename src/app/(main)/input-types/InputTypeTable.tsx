@@ -10,6 +10,7 @@ export default async function InputTypeTable() {
       input_type_id: item.input_type_id,
       input_name: item.input_name,
       crop_count: item._count.crop_inputs,
+      created_at: item.created_at,
     };
   });
 
