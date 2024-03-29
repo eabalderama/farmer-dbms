@@ -20,8 +20,8 @@ model accounts {
   role       roles  @default(WORKER)
   user       users?
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }
 
 model users {
@@ -35,8 +35,8 @@ model users {
   assigned_farmers assigned_workers[]
   visits           visits[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }
 
 model expertise {
@@ -44,8 +44,8 @@ model expertise {
   expertise_name String
   user_expertise user_expertise[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }
 
 model user_expertise {
@@ -55,8 +55,8 @@ model user_expertise {
   expertise_id      Int
   expertise         expertise @relation(fields: [expertise_id], references: [expertise_id])
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }
 
 model farmers {
@@ -71,8 +71,8 @@ model farmers {
   visits           visits[]
   planted_crops    planted_crops[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }
 
 model assigned_workers {
@@ -82,8 +82,8 @@ model assigned_workers {
   farmer_id          Int
   farmer             farmers @relation(fields: [farmer_id], references: [farmer_id])
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }
 
 model visits {
@@ -95,8 +95,8 @@ model visits {
   visit_date DateTime
   note       String?
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }
 
 model crops {
@@ -105,8 +105,8 @@ model crops {
 
   planted_crops planted_crops[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }
 
 model planted_crops {
@@ -122,8 +122,8 @@ model planted_crops {
   yield       yields?
   crop_inputs crop_inputs[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }
 
 model yields {
@@ -134,8 +134,8 @@ model yields {
   quantity        String?
   notes           String?
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }
 
 model input_types {
@@ -144,8 +144,8 @@ model input_types {
 
   crop_inputs crop_inputs[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }
 
 model crop_inputs {
@@ -159,8 +159,8 @@ model crop_inputs {
   quantity         String?
   application_date DateTime?
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }
 
 enum roles {
