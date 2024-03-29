@@ -1,3 +1,4 @@
+import { getExpertise } from "@/actions/expertise";
 import CreateUserForm from "@/components/Forms/CreateUserForm";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,7 +10,8 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 
-export default function CreateUser() {
+export default async function CreateUser() {
+  const expertise = await getExpertise();
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -21,7 +23,7 @@ export default function CreateUser() {
         <SheetHeader>
           <SheetTitle>Create Worker</SheetTitle>
           <SheetDescription asChild>
-            <CreateUserForm />
+            <CreateUserForm expertise={expertise} />
           </SheetDescription>
         </SheetHeader>
       </SheetContent>

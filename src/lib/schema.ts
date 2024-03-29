@@ -31,6 +31,7 @@ export const CreateUserSchema = z.object({
       "Must have atleast one special character"
     ),
   role: z.enum([roles.ADMIN, roles.WORKER]).optional(),
+  expertise: z.array(z.number()),
 });
 
 export const CreateExpertiseSchema = z.object({

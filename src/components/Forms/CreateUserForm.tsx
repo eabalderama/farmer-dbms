@@ -17,8 +17,24 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { createUser } from "@/actions/user";
 import { toast } from "sonner";
+import { Expertise } from "@/types/expertise";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { Check, ChevronsUpDown } from "lucide-react";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "../ui/command";
+import { cn } from "@/lib/utils";
 
-export default function CreateUserForm() {
+interface CreateUserFormProps {
+  expertise: Expertise;
+}
+
+export default function CreateUserForm({ expertise }: CreateUserFormProps) {
   const form = useForm<z.infer<typeof CreateUserSchema>>({
     resolver: zodResolver(CreateUserSchema),
     defaultValues: {
@@ -26,6 +42,7 @@ export default function CreateUserForm() {
       email: "",
       contact_number: "",
       password: "",
+      expertise: [],
     },
   });
 
@@ -103,6 +120,80 @@ export default function CreateUserForm() {
                 Strong password must have at least 8 characters, atleast one
                 uppercase and lowercase, one number, and one special character
               </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="expertise"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Expertise</FormLabel>
+              <FormControl>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <FormControl>
+                      <Button
+                        variant="outline"
+                        role="combobox"
+                        className={cn(
+                          "w-full justify-between flex !ring-0 !outline-none",
+                          !field.value && "text-muted-foreground"
+                        )}
+                      >
+                        <span className="flex-1 overflow-x-auto scrollbar-hide">
+                          {field.value.length
+                            ? form
+                                .getValues("expertise")
+                                .map(
+                                  (value) =>
+                                    expertise.find(
+                                      (item) => item.expertise_id === value
+                                    )?.expertise_name + ", "
+                                )
+                            : "Select Expertise"}
+                        </span>
+                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                      </Button>
+                    </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-[200px] p-0">
+                    <Command>
+                      <CommandInput placeholder="Search language..." />
+                      <CommandEmpty>No expertise found.</CommandEmpty>
+                      <CommandList>
+                        <CommandGroup>
+                          {expertise.map((item) => (
+                            <CommandItem
+                              value={item.expertise_name}
+                              key={item.expertise_id}
+                              onSelect={() => {
+                                form.setValue("expertise", [
+                                  ...form.getValues("expertise"),
+                                  item.expertise_id,
+                                ]);
+                              }}
+                            >
+                              <Check
+                                className={cn(
+                                  "mr-2 h-4 w-4",
+                                  form
+                                    .getValues("expertise")
+                                    .includes(item.expertise_id)
+                                    ? "opacity-100"
+                                    : "opacity-0"
+                                )}
+                              />
+                              {item.expertise_name}
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </CommandList>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
+              </FormControl>
               <FormMessage />
             </FormItem>
           )}

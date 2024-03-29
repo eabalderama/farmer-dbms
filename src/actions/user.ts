@@ -2,7 +2,7 @@
 
 import { prisma } from "@/lib/db";
 import { CreateUserSchema } from "@/lib/schema";
-import { roles } from "@prisma/client";
+import { Prisma, roles } from "@prisma/client";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import bcrypt from "bcrypt";
 import { revalidatePath } from "next/cache";
@@ -20,20 +20,25 @@ export const createUser = async (data: unknown) => {
 
   const hashed = bcrypt.hashSync(payload.password, SALT_ROUNDS);
 
-  try {
-    const account = await prisma.accounts.create({
-      data: {
-        email: payload.email,
-        password: hashed,
-        role: payload.role,
-        user: {
-          create: {
-            name: payload.name,
-            picture: payload.picture,
-            contact_number: payload.contact_number,
-          },
+  const createAccountData: Prisma.accountsUncheckedCreateInput = {
+    email: payload.email,
+    password: hashed,
+    role: payload.role,
+    user: {
+      create: {
+        name: payload.name,
+        picture: payload.picture,
+        contact_number: payload.contact_number,
+        user_expertise: {
+          create: payload.expertise.map((item) => ({ expertise_id: item })),
         },
       },
+    },
+  };
+
+  try {
+    const account = await prisma.accounts.create({
+      data: createAccountData,
       include: {
         user: true,
       },
