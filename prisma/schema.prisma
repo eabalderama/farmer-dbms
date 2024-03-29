@@ -117,7 +117,7 @@ model planted_crops {
   farmer          farmers   @relation(fields: [farmer_id], references: [farmer_id])
   harvest_date    DateTime?
   planting_date   DateTime?
-  area            String?
+  area            Int?
 
   yield       yields?
   crop_inputs crop_inputs[]
