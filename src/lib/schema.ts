@@ -61,3 +61,13 @@ export const CreateFarmerSchema = z.object({
   farm_name: z.string().min(3).optional(),
   assigned_workers: z.array(z.number()),
 });
+
+export const CreatePlantedCropSchema = z.object({
+  crop_id: z.number({ required_error: "Field is required" }),
+  farmer_id: z.number({ required_error: "Field is required" }),
+  harvest_date: z.date().optional(),
+  planting_date: z.date().optional(),
+  area: z.coerce
+    .number({ invalid_type_error: "Area must be a number" })
+    .optional(),
+});

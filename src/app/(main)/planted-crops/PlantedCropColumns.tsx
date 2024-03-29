@@ -7,67 +7,118 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { TFarmerRow } from "@/types/farmer";
+import { TPlantedCropRow } from "@/types/planted-crop";
 import { ColumnDef } from "@tanstack/react-table";
+import { format } from "date-fns";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 
-export const FarmerColumns: ColumnDef<TFarmerRow>[] = [
+export const PlantedCropColumns: ColumnDef<TPlantedCropRow>[] = [
   {
-    accessorKey: "name",
+    accessorKey: "farmer_name",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Name
+          Farmer Name
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
   },
   {
-    accessorKey: "email",
+    accessorKey: "crop_name",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Email
+          Crop Name
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
   },
   {
-    accessorKey: "planted_crops",
+    accessorKey: "planting_date",
     header: ({ column }) => {
       return (
         <Button
-          title="Number of crops planted"
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Planted Crops
+          Planting Date
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ cell }) => {
+      const value = cell.getValue();
+      let date = "N/A";
+      if (value) {
+        date = format(value.toString(), "PP");
+      }
+      return <span>{date}</span>;
+    },
+  },
+  {
+    accessorKey: "harvest_date",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Harvest Date
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ cell }) => {
+      const value = cell.getValue();
+      let date = "N/A";
+      if (value) {
+        date = format(value.toString(), "PP");
+      }
+      return <span>{date}</span>;
+    },
+  },
+  {
+    accessorKey: "area",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Area
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
   },
   {
-    accessorKey: "assigned_workers",
+    accessorKey: "created_at",
     header: ({ column }) => {
       return (
         <Button
-          title="Number of workers assigned"
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Worker Count
+          Date Added
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
+    },
+    cell: ({ cell }) => {
+      const value = cell.getValue();
+      let date = "N/A";
+      if (value) {
+        date = format(value.toString(), "PP");
+      }
+      return <span>{date}</span>;
     },
   },
   {
@@ -85,7 +136,7 @@ export const FarmerColumns: ColumnDef<TFarmerRow>[] = [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem>View Farmer</DropdownMenuItem>
+            <DropdownMenuItem>View Planted Crop</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );

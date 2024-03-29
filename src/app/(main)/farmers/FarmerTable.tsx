@@ -1,6 +1,7 @@
 import { DataTable } from "@/components/DataTable";
 import { FarmerColumns } from "./FarmerColumns";
 import { getFarmers } from "@/actions/farmer";
+import { TFarmerRow } from "@/types/farmer";
 
 export default async function FarmerTable() {
   const farmers = await getFarmers();
